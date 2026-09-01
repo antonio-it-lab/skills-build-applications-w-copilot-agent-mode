@@ -1,5 +1,14 @@
 import { useEffect, useState } from 'react'
-import { fetchJson } from '../utils/api.js'
+
+function getApiBaseUrl() {
+  const codespaceName = import.meta.env.VITE_CODESPACE_NAME
+
+  if (codespaceName && typeof codespaceName === 'string' && codespaceName.trim()) {
+    return `https://${codespaceName.trim()}-8000.app.github.dev`
+  }
+
+  return 'http://localhost:8000'
+}
 
 function Workouts() {
   const [workouts, setWorkouts] = useState([])
@@ -11,7 +20,16 @@ function Workouts() {
 
     async function loadWorkouts() {
       try {
-        const data = await fetchJson('/api/workouts/')
+        const apiBaseUrl = getApiBaseUrl()
+        const response = await fetch(`${apiBaseUrl}/api/workouts/`)
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`)
+        }
+
+        const payload = await response.json()
+        const data = Array.isArray(payload) ? payload : Array.isArray(payload?.results) ? payload.results : []
+
         if (isMounted) {
           setWorkouts(data)
         }

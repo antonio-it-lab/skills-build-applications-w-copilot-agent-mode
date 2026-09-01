@@ -4,7 +4,6 @@ import Leaderboard from './components/Leaderboard.jsx'
 import Teams from './components/Teams.jsx'
 import Users from './components/Users.jsx'
 import Workouts from './components/Workouts.jsx'
-import { getApiBaseUrl } from './utils/api.js'
 import './App.css'
 
 const navItems = [
@@ -14,6 +13,16 @@ const navItems = [
   { to: '/leaderboard', label: 'Leaderboard' },
   { to: '/workouts', label: 'Workouts' },
 ]
+
+function getApiBaseUrl() {
+  const codespaceName = import.meta.env.VITE_CODESPACE_NAME
+
+  if (codespaceName && typeof codespaceName === 'string' && codespaceName.trim()) {
+    return `https://${codespaceName.trim()}-8000.app.github.dev`
+  }
+
+  return 'http://localhost:8000'
+}
 
 function App() {
   const apiBaseUrl = getApiBaseUrl()

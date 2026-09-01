@@ -1,5 +1,14 @@
 import { useEffect, useState } from 'react'
-import { fetchJson } from '../utils/api.js'
+
+function getApiBaseUrl() {
+  const codespaceName = import.meta.env.VITE_CODESPACE_NAME
+
+  if (codespaceName && typeof codespaceName === 'string' && codespaceName.trim()) {
+    return `https://${codespaceName.trim()}-8000.app.github.dev`
+  }
+
+  return 'http://localhost:8000'
+}
 
 function Users() {
   const [users, setUsers] = useState([])
@@ -11,7 +20,16 @@ function Users() {
 
     async function loadUsers() {
       try {
-        const data = await fetchJson('/api/users/')
+        const apiBaseUrl = getApiBaseUrl()
+        const response = await fetch(`${apiBaseUrl}/api/users/`)
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`)
+        }
+
+        const payload = await response.json()
+        const data = Array.isArray(payload) ? payload : Array.isArray(payload?.results) ? payload.results : []
+
         if (isMounted) {
           setUsers(data)
         }
