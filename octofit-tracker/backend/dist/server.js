@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express from 'express';
 import mongoose from 'mongoose';
 import { Activity, LeaderboardEntry, Team, User, Workout } from './models/index.js';
@@ -7,6 +8,7 @@ const codespaceName = process.env.CODESPACE_NAME;
 const baseUrl = codespaceName
     ? `https://${codespaceName}-8000.app.github.dev`
     : `http://localhost:${port}`;
+app.use(cors());
 app.use(express.json());
 const connectionString = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit_db';
 async function connectDatabase() {
