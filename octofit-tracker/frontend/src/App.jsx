@@ -31,7 +31,7 @@ function App() {
               </p>
               <div className="text-start small text-muted">API: {apiBaseUrl}</div>
               <div className="mt-3 small text-muted">
-                VITE_CODESPACE_NAME must be defined in .env.local for Codespaces. If it is unset, the app falls back to localhost.
+                Set VITE_CODESPACE_NAME in .env.local for Codespaces; otherwise the app falls back to http://localhost:8000.
               </div>
             </div>
           </div>

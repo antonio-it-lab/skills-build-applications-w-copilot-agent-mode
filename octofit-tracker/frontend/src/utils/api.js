@@ -5,13 +5,6 @@ export function getApiBaseUrl() {
     return `https://${codespaceName.trim()}-8000.app.github.dev`
   }
 
-  if (typeof window !== 'undefined' && window.location.hostname.includes('app.github.dev')) {
-    const match = window.location.hostname.match(/^(.*?)-5173\.app\.github\.dev$/)
-    if (match) {
-      return `https://${match[1]}-8000.app.github.dev`
-    }
-  }
-
   return 'http://localhost:8000'
 }
 
